@@ -2,6 +2,8 @@ import os
 import json
 from PIL import Image
 import matplotlib.pyplot as plt
+import random
+from sklearn.decomposition import PCA
 
 
 def check_image_shapes(data_dir, json_path):
@@ -42,18 +44,18 @@ def check_image_shapes(data_dir, json_path):
     return different_shapes
 
 
-def count_images_per_label(data_set):
+def count_images_per_label(dataset):
     """
     Counts the number of images for each label in the dataset.
 
     Parameters:
-        data_set (list of tuples): A list where each tuple contains an image array and a label.
+        dataset (list of tuples): A list where each tuple contains an image array and a label.
 
     Returns:
         dict: A dictionary with labels as keys and the count of images for each label as values.
     """
     label_counts = {}
-    for _, label in data_set:
+    for _, label in dataset:
         if label in label_counts:
             label_counts[label] += 1
         else:
@@ -96,5 +98,71 @@ def display_images_by_class(data, images_per_class):
     plt.tight_layout()
     plt.show()
 
+
+def prepare_data(dataset):
+    """
+    Shuffles the dataset and separates it into flattened features and labels.
+
+    Parameters:
+        dataset (list of tuples): Each tuple contains an image data array and a corresponding label.
+
+    Returns:
+        tuple: Two lists, where the first list contains the flattened features (image data arrays)
+               and the second list contains the labels..
+    """
+    # Shuffle the dataset to ensure randomness
+    random.shuffle(dataset)
+
+    # Flatten features, collect labels
+    X_set = [data[0].flatten() for data in dataset]
+    Y_set = [data[1] for data in dataset]
+
+    return X_set, Y_set
+
+
+def apply_pca(dataset, n_components):
+    """
+    Applies PCA to reduce the dimensionality of the given dataset to the specified number of components.
+
+    Parameters:
+        dataset (array): The dataset to be transformed, where each row represents a sample
+                            and each column represents a feature.
+        n_components (int): The number of principal components to retain in the transformation.
+
+    Returns:
+        array: The dataset transformed into a reduced dimensional space.
+    """
+    pca = PCA(n_components=n_components)
+    pca.fit(dataset)
+    data_reduced = pca.transform(dataset)
+
+    return data_reduced
+
+
+def split_data(X_set, Y_set, train_ratio):
+    """
+    Splits the dataset into training and testing sets based on the specified ratio.
+
+    Parameters:
+        X_set (array-like): Feature dataset where each row represents a sample.
+        Y_set (array-like): Label dataset corresponding to the features in X_set.
+        train_ratio (float): The proportion of the dataset to include in the train split.
+
+    Returns:
+        tuple: Contains training and testing datasets: (X_train, Y_train, X_test, Y_test)
+    """
+    # Calculate the split index based on the desired training ratio
+    total_data = len(X_set)
+    split_index = int(total_data * train_ratio)
+
+    # Split the features dataset
+    X_train = X_set[:split_index]
+    X_test = X_set[split_index:]
+
+    # Split the labels dataset
+    Y_train = Y_set[:split_index]
+    Y_test = Y_set[split_index:]
+
+    return X_train, Y_train, X_test, Y_test
 
 # %%

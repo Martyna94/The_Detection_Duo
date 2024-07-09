@@ -81,8 +81,8 @@ class ImageLoader:
                 all_data.append((np.array(img_array, dtype=np.int32), label))
                 label_count[label] += 1
                 if len(all_data) % 100 == 0:
-                    display(print(f"Total images loaded : {len(all_data)}, Label count : {label_count}", end='\r',
-                                  flush=True))
+                    print(f"Images loaded : {len(all_data)}, Label count : {label_count}", end='\r',
+                                  flush=True)
         print(f"Total images loaded : {len(all_data)}, Label count : {label_count}", end='\r', flush=True)
         return all_data
 
