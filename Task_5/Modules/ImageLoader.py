@@ -2,7 +2,6 @@ import os
 import json
 from PIL import Image
 import numpy as np
-from IPython.display import display
 
 
 class ImageLoader:
@@ -49,37 +48,43 @@ class ImageLoader:
            list: A list of image data and labels tuple(image,label), constrained by the image limit.
        """
         with open(self.json_path, 'r') as f:
-            train_data_json = json.load(f)
+            data_json = json.load(f)
 
         image_paths_by_label = {label: [] for label in range(self.label_num)}
-        for key, value in train_data_json.items():
+        for key, value in data_json.items():
             if value in image_paths_by_label:
                 image_paths_by_label[value].append(key)
 
         all_data = []
         label_count = {label: 0 for label in range(self.label_num)}
 
-        for label in range(self.label_num):
-            for key_name in image_paths_by_label[label]:
-                if label_count[label] >= image_limit:
-                    break
+        for label, paths in image_paths_by_label.items():
+            # Random Selection Using np.random.choice: This function is used to randomly select indices from the list
+            # of image paths, ensuring that the selection is uniformly random without the need to shuffle the entire
+            # list. The replace=False parameter ensures that the same image is not selected more than once.
+            if len(paths) > image_limit:
+                selected_indices = np.random.choice(len(paths), image_limit, replace=False)
+                selected_paths = [paths[i] for i in selected_indices]
+            else:
+                # Use all paths if they are fewer than the limit
+                selected_paths = paths
 
+            for key_name in selected_paths:
                 img_path = os.path.join(self.data_dir, key_name)
                 if not os.path.isfile(img_path):
                     continue
-                    # Convert the image to grayscale
 
                 image = Image.open(img_path)
                 image = image.convert('L')
                 img_array = np.array(image)
                 if crop:
                     img_array = self.crop_image_region(img_array, **crop_params)
-
                 if resize:
                     img_array = self.resize_image_array(img_array, self.image_size)
 
                 all_data.append((np.array(img_array, dtype=np.int32), label))
                 label_count[label] += 1
+
                 if len(all_data) % 100 == 0:
                     print(f"Images loaded : {len(all_data)}, Label count : {label_count}", end='\r',
                                   flush=True)
