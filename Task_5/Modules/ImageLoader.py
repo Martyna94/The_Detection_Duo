@@ -1,20 +1,23 @@
 import os
 import json
+from typing import List, Tuple, Any
+
 from PIL import Image
 import numpy as np
+from numpy import ndarray
 
 
 class ImageLoader:
     DEFAULT_LABELS = ["good weld", "burn through", "contamination", "lack of fusion", "misalignment",
                       "lack of penetration"]
 
-    def __init__(self, data_dir, json_path, image_size, label_names=None):
+    def __init__(self, data_dirs, json_paths, image_size, label_names=None):
         """
         A class to load and process images from a directory using specified settings.
 
         Attributes:
-            data_dir (str): Directory where image files are located.
-            json_path (str): Path to the JSON file containing image labels.
+            json_paths (list): A list of paths to JSON files containing image paths and labels.
+            data_dirs (list): A list of directories corresponding to the JSON paths.
             image_size (tuple): Desired size to which each image will be resized (width, height).
             label_names (list of str, optional): List of strings representing label categories
 
@@ -25,70 +28,90 @@ class ImageLoader:
             crop_image_region(image, **kwargs): Crops the image based on provided parameters.
 
         Example:
-            >>> loader = ImageLoader('./data', './labels.json', (256, 256))
+            >>> loader = ImageLoader(['./data'], ['./labels.json'], (256, 256))
             >>> data_with_limit = loader.load_images(image_limit=200, vertical_start_split=0.3, horizontal_start_split=0.2)
             >>> data_no_limit = loader.load_images(vertical_end_split=0.8, horizontal_end_split=0.7)
             >>> cropped_image_array = ImageLoader.crop_image_region(image_array, 0.25, 0.75, 0.1, 0.9)
         """
-        self.data_dir = data_dir
-        self.json_path = json_path
+        if len(json_paths) != len(data_dirs):
+            raise ValueError("The number of JSON paths must match the number of data directories")
+
+        for path in json_paths:
+            if not os.path.isfile(path):
+                raise FileNotFoundError(f"The JSON path {path} does not exist")
+
+        for dir in data_dirs:
+            if not os.path.isdir(dir):
+                raise FileNotFoundError(f"The directory {dir} does not exist")
+
+        self.data_dirs = data_dirs
+        self.json_paths = json_paths
         self.image_size = image_size
         self.label_names = label_names if label_names is not None else ImageLoader.DEFAULT_LABELS
         self.label_num = len(self.label_names)
 
-    def _load_data_with_limit(self, image_limit, resize, crop, crop_params):
+    def _load_data_with_limit(self, image_limit, resize, crop, crop_params, random_seed=0):
         """
-       Helper method to load images with a limit on the number of images per label, applying cropping with specified parameters.
+        Load images with a limit per label, applying cropping with specified parameters.
 
-       Parameters:
+        Parameters:
            image_limit (int): The maximum number of images to load per label.
            crop_params (dict): Parameters for the cropping function.
 
-       Returns:
+        Returns:
            list: A list of image data and labels tuple(image,label), constrained by the image limit.
        """
-        with open(self.json_path, 'r') as f:
-            data_json = json.load(f)
 
         image_paths_by_label = {label: [] for label in range(self.label_num)}
-        for key, value in data_json.items():
-            if value in image_paths_by_label:
-                image_paths_by_label[value].append(key)
 
-        all_data = []
+        # Load and merge data from both JSONs
+        for json_path, data_dir in zip(self.json_paths, self.data_dirs):
+            with open(json_path,'r') as f:
+                data_json = json.load(f)
+            for key, value in data_json.items():
+                full_path = os.path.join(data_dir,key)
+                image_paths_by_label[value].append(full_path)
+
+        all_data: list[tuple[ndarray, Any]] = []
         label_count = {label: 0 for label in range(self.label_num)}
+
+        # Set the seed
+        np.random.seed(random_seed)
 
         for label, paths in image_paths_by_label.items():
             # Random Selection Using np.random.choice: This function is used to randomly select indices from the list
             # of image paths, ensuring that the selection is uniformly random without the need to shuffle the entire
-            # list. The replace=False parameter ensures that the same image is not selected more than once.
+            # list.
             if len(paths) > image_limit:
                 selected_indices = np.random.choice(len(paths), image_limit, replace=False)
                 selected_paths = [paths[i] for i in selected_indices]
             else:
-                # Use all paths if they are fewer than the limit
                 selected_paths = paths
 
-            for key_name in selected_paths:
-                img_path = os.path.join(self.data_dir, key_name)
+            for i, img_path in enumerate(selected_paths):
                 if not os.path.isfile(img_path):
                     continue
 
-                image = Image.open(img_path)
-                image = image.convert('L')
-                img_array = np.array(image)
-                if crop:
-                    img_array = self.crop_image_region(img_array, **crop_params)
-                if resize:
-                    img_array = self.resize_image_array(img_array, self.image_size)
+                try:
+                    image = Image.open(img_path).convert('L')
+                    img_array = np.array(image)
+                    if crop:
+                        img_array = self.crop_image_region(img_array, **crop_params)
+                    if resize:
+                        img_array = self.resize_image_array(img_array, self.image_size)
 
-                all_data.append((np.array(img_array, dtype=np.int32), label))
-                label_count[label] += 1
+                    all_data.append((np.array(img_array, dtype=np.int32), label))
+                    label_count[label] = i+1
 
-                if len(all_data) % 100 == 0:
-                    print(f"Images loaded : {len(all_data)}, Label count : {label_count}", end='\r',
-                                  flush=True)
-        print(f"Total images loaded : {len(all_data)}, Label count : {label_count}", end='\r', flush=True)
+                    if len(all_data) % 100 == 0:
+                        print(f"Images loaded: {len(all_data)}, Current label: {label}, Total per label: {label_count}", end='\r', flush=True)
+
+                except Exception as e:
+                    print(f"Error processing image {img_path}: {e}")
+
+        print('\n')
+        print(f"Total images loaded : {len(all_data)}")
+        print(f"Label count : {label_count}", end='\r', flush=True)
         return all_data
 
     def _load_all_data(self, resize, crop, crop_params):
@@ -159,27 +182,9 @@ class ImageLoader:
         return image[vertical_start_index:vertical_end_index, horizontal_start_index:horizontal_end_index]
 
     @staticmethod
-    def resize_image_array(image_array, new_size):
-        """
-        Resizes an image (numpy array) using PIL to a new size.
-
-        Parameters:
-            image_array (numpy.ndarray): The image data in the form of a numpy array.
-            new_size (tuple): The new size specified as (width, height).
-
-        Returns:
-            numpy.ndarray: The resized image as a numpy array.
-        """
-        # Convert the numpy array to a PIL Image object
-        image = Image.fromarray(image_array)
-
-        # Resize the image
-        resized_image = image.resize(new_size)
-
-        # Convert the PIL Image back to a numpy array
-        resized_image_array = np.array(resized_image)
-
-        return resized_image_array
+    def resize_image_array(img_array, size):
+        image = Image.fromarray(img_array)
+        return np.array(image.resize(size))
 
     def load_images(self, image_limit=None, resize=True, crop=True, **crop_params):
         """
@@ -194,7 +199,7 @@ class ImageLoader:
             list: List of tuples, each containing an image array and its corresponding label.
         """
         if image_limit is not None:
-            return self._load_data_with_limit(image_limit, resize, crop, crop_params)
+            return self._load_data_with_limit(image_limit, resize, crop, crop_params=crop_params)
         else:
             return self._load_all_data(resize, crop, crop_params)
 
@@ -206,7 +211,7 @@ class ImageLoader:
             dict: A dictionary where keys are label identifiers (integers) and values are the counts of images associated with each label.
 
         Example:
-            >>> image_loader = ImageLoader('./data', './train.json', (224, 224))
+            >>> image_loader = ImageLoader(['./data'], ['./train.json'], (224, 224))
             >>> label_counts = image_loader.count_images_per_label_from_json()
             >>> print(label_counts)
                 {0: 150, 1: 120, 2: 130}  # Example output, actual will vary based on JSON content.
@@ -217,17 +222,17 @@ class ImageLoader:
             If any labels are encountered that are not in the pre-initialized `label_count` dictionary, they will be added dynamically.
         """
 
-        with open(self.json_path, 'r') as json_file:
-            train_data_json = json.load(json_file)
-
         label_count = {label: 0 for label in range(self.label_num)}
+        for json_path in self.json_paths:
+            with open(json_path, 'r') as json_file:
+                data_json = json.load(json_file)
 
-        # Count each label occurrence in the JSON data
-        for _, label in train_data_json.items():
-            if label in label_count:
-                label_count[label] += 1
-            else:
-                label_count[label] = 1
+            for _, label in data_json.items():
+                if label in label_count:
+                    label_count[label] += 1
+                else:
+                    label_count[label] = 1
+
         print(f'{label_count}')
         return label_count
 

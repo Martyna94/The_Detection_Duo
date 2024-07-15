@@ -1,0 +1,11 @@
+Step 9| Cost: 1.6226490421147544 | Validation accuracy: 41.20%
+Step 10| Cost: 1.610211176067046 | Validation accuracy: 44.85%
+Step 11| Cost: 1.6037843724720984 | Validation accuracy: 46.18%
+Step 12| Cost: 1.5989339874120057 | Validation accuracy: 40.86%
+Step 13| Cost: 1.5886596506732638 | Validation accuracy: 42.52%
+Step 14| Cost: 1.5753495511316657 | Validation accuracy: 44.85%
+Step 15| Cost: 1.5617521808492723 | Validation accuracy: 43.19%
+Step 16| Cost: 1.5548624474856763 | Validation accuracy: 41.86%
+Step 17| Cost: 1.5487431931700613 | Validation accuracy: 41.53%
+Step 18| Cost: 1.5403815312369233 | Validation accuracy: 39.87%
+Step 19| Cost: 1.5347530096700523 | Validation accuracy: 42.52%

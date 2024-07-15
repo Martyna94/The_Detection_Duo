@@ -1,0 +1,139 @@
+Step 0| Cost: 2.09405291137041 | Validation accuracy: 12.29%
+Step 1| Cost: 2.065700525371619 | Validation accuracy: 13.95%
+Step 2| Cost: 2.040688310153122 | Validation accuracy: 13.95%
+Step 3| Cost: 2.0876881288238085 | Validation accuracy: 13.62%
+Step 4| Cost: 2.0513913887802864 | Validation accuracy: 13.95%
+Step 5| Cost: 2.0296554759642 | Validation accuracy: 13.62%
+Step 6| Cost: 2.0830189577445126 | Validation accuracy: 13.95%
+Step 7| Cost: 1.997881121057588 | Validation accuracy: 15.61%
+Step 8| Cost: 1.9798737330756242 | Validation accuracy: 16.94%
+Step 9| Cost: 1.9297405881386216 | Validation accuracy: 19.27%
+Step 10| Cost: 1.9430875273471402 | Validation accuracy: 19.60%
+Step 11| Cost: 1.9724879470025183 | Validation accuracy: 21.26%
+Step 12| Cost: 1.9355155962939117 | Validation accuracy: 22.59%
+Step 13| Cost: 1.8921985775192218 | Validation accuracy: 24.25%
+Step 14| Cost: 1.9258498019011017 | Validation accuracy: 23.92%
+Step 15| Cost: 1.8859212807897834 | Validation accuracy: 24.25%
+Step 16| Cost: 1.9111421355460734 | Validation accuracy: 24.58%
+Step 17| Cost: 1.9077373751960118 | Validation accuracy: 24.58%
+Step 18| Cost: 1.8676379357838173 | Validation accuracy: 25.25%
+Step 19| Cost: 1.8715696626201137 | Validation accuracy: 24.58%
+Step 20| Cost: 1.8953214595034795 | Validation accuracy: 23.59%
+Step 21| Cost: 1.8616528919205473 | Validation accuracy: 22.59%
+Step 22| Cost: 1.89283571063048 | Validation accuracy: 22.26%
+Step 23| Cost: 1.875811222909086 | Validation accuracy: 22.92%
+Step 24| Cost: 1.8631175261896153 | Validation accuracy: 23.59%
+Step 25| Cost: 1.8278995151704895 | Validation accuracy: 24.58%
+Step 26| Cost: 1.8009285590261461 | Validation accuracy: 24.58%
+Step 27| Cost: 1.829673664521282 | Validation accuracy: 24.92%
+Step 28| Cost: 1.8821964808485252 | Validation accuracy: 24.58%
+Step 29| Cost: 1.7997075355151315 | Validation accuracy: 24.92%
+Step 30| Cost: 1.78369454777999 | Validation accuracy: 25.25%
+Step 31| Cost: 1.7721881120967231 | Validation accuracy: 25.25%
+Step 32| Cost: 1.776847989103411 | Validation accuracy: 25.91%
+Step 33| Cost: 1.8028276653363193 | Validation accuracy: 26.25%
+Step 34| Cost: 1.8130433768853889 | Validation accuracy: 27.24%
+Step 35| Cost: 1.7811609507312955 | Validation accuracy: 26.58%
+Step 36| Cost: 1.758418606195682 | Validation accuracy: 26.58%
+Step 37| Cost: 1.7436289931509914 | Validation accuracy: 26.25%
+Step 38| Cost: 1.7659410569346528 | Validation accuracy: 25.58%
+Step 39| Cost: 1.7891321163275504 | Validation accuracy: 25.58%
+Step 40| Cost: 1.7843922935070202 | Validation accuracy: 25.91%
+Step 41| Cost: 1.7804497638815495 | Validation accuracy: 26.91%
+Step 42| Cost: 1.7832852125666978 | Validation accuracy: 27.91%
+Step 43| Cost: 1.8150148633319096 | Validation accuracy: 31.23%
+Step 44| Cost: 1.7737039686268545 | Validation accuracy: 32.23%
+Step 45| Cost: 1.7682357686963202 | Validation accuracy: 34.22%
+Step 46| Cost: 1.7586931332273847 | Validation accuracy: 34.22%
+Step 47| Cost: 1.7186348095197794 | Validation accuracy: 35.22%
+Step 48| Cost: 1.7000518658923953 | Validation accuracy: 34.22%
+Step 49| Cost: 1.7046302783581295 | Validation accuracy: 34.55%
+Step 50| Cost: 1.6889929727877693 | Validation accuracy: 34.88%
+Step 51| Cost: 1.7353515601459637 | Validation accuracy: 34.22%
+Step 52| Cost: 1.723095945236377 | Validation accuracy: 34.22%
+Step 53| Cost: 1.7376592630235361 | Validation accuracy: 33.22%
+Step 54| Cost: 1.7051923427271496 | Validation accuracy: 34.55%
+Step 55| Cost: 1.6857560935939981 | Validation accuracy: 34.88%
+Step 56| Cost: 1.6617175394472514 | Validation accuracy: 36.21%
+Step 57| Cost: 1.6822176556657291 | Validation accuracy: 38.21%
+Step 58| Cost: 1.645357695928745 | Validation accuracy: 38.87%
+Step 59| Cost: 1.6575128044380025 | Validation accuracy: 39.87%
+Step 60| Cost: 1.6864940976113343 | Validation accuracy: 40.53%
+Step 61| Cost: 1.6613564854995002 | Validation accuracy: 41.20%
+Step 62| Cost: 1.6362585439159567 | Validation accuracy: 41.86%
+Step 63| Cost: 1.67091930252619 | Validation accuracy: 41.86%
+Step 64| Cost: 1.6728491179641256 | Validation accuracy: 41.53%
+Step 65| Cost: 1.6279921169475096 | Validation accuracy: 42.52%
+Step 66| Cost: 1.60748735759739 | Validation accuracy: 44.85%
+Step 67| Cost: 1.6256497771424656 | Validation accuracy: 45.18%
+Step 68| Cost: 1.6615457782215104 | Validation accuracy: 45.18%
+Step 69| Cost: 1.688844543290425 | Validation accuracy: 45.18%
+Step 70| Cost: 1.6198683478943088 | Validation accuracy: 44.52%
+Step 71| Cost: 1.6768176576186746 | Validation accuracy: 44.85%
+Step 72| Cost: 1.6347515060250322 | Validation accuracy: 44.52%
+Step 73| Cost: 1.6363742962556518 | Validation accuracy: 44.52%
+Step 74| Cost: 1.6407188157440702 | Validation accuracy: 43.85%
+Step 75| Cost: 1.6042316479424377 | Validation accuracy: 43.52%
+Step 76| Cost: 1.6295142777779266 | Validation accuracy: 44.52%
+Step 77| Cost: 1.6420034977956408 | Validation accuracy: 45.51%
+Step 78| Cost: 1.6223036157616852 | Validation accuracy: 45.85%
+Step 79| Cost: 1.6215390971187544 | Validation accuracy: 45.85%
+Step 80| Cost: 1.6409289182349203 | Validation accuracy: 45.85%
+Step 81| Cost: 1.5931456826575427 | Validation accuracy: 46.18%
+Step 82| Cost: 1.595123222230467 | Validation accuracy: 45.51%
+Step 83| Cost: 1.6456917090280587 | Validation accuracy: 45.85%
+Step 84| Cost: 1.595283577878434 | Validation accuracy: 45.85%
+Step 85| Cost: 1.5941356156458173 | Validation accuracy: 44.85%
+Step 86| Cost: 1.5832567466081893 | Validation accuracy: 45.85%
+Step 87| Cost: 1.6303590440939792 | Validation accuracy: 43.85%
+Step 88| Cost: 1.5953113137902224 | Validation accuracy: 43.19%
+Step 89| Cost: 1.5888792847773612 | Validation accuracy: 43.85%
+Step 90| Cost: 1.603926577769862 | Validation accuracy: 44.19%
+Step 91| Cost: 1.5487817496854177 | Validation accuracy: 43.85%
+Step 92| Cost: 1.6030499588070115 | Validation accuracy: 43.85%
+Step 93| Cost: 1.5742037170895398 | Validation accuracy: 44.19%
+Step 94| Cost: 1.574897541950383 | Validation accuracy: 43.85%
+Step 95| Cost: 1.6133667720283655 | Validation accuracy: 44.19%
+Step 96| Cost: 1.5968257694437629 | Validation accuracy: 43.52%
+Step 97| Cost: 1.5945779808957028 | Validation accuracy: 44.52%
+Step 98| Cost: 1.5801100437670679 | Validation accuracy: 44.19%
+Step 99| Cost: 1.5870853489206347 | Validation accuracy: 42.52%
+[[ 0.17526989 -0.0502862   0.10445638  1.24767236  0.61435865  1.0384021
+   1.41062775 -0.18571671  0.22254034  1.20988009  0.79522834  0.47463442
+   0.67816095  0.42961859  1.28140447]
+ [ 0.30927669  0.35028418  0.59825618  0.00903808  0.21303386 -0.29712996
+   0.49053659  0.44702336  0.41481177  0.03107686  0.754228    0.9155301
+   0.64433967  1.20512129  0.67847878]
+ [-0.48576498  1.31172401 -0.09846911  0.52440892  0.88625792 -0.09787889
+  -0.07214465  0.83598378  0.75144064  0.17304131 -0.02289184  0.82890797
+   0.24319267 -0.10666546  0.65457553]
+ [ 0.51231629  0.86558836  0.22725082 -0.06675439  0.63696329  0.2998566
+   0.97044871  0.73217147  0.59508702  0.21548043 -0.10319692  0.69391283
+   0.57368746  0.05288905  0.53935431]
+ [ 0.5546988   0.24199026  0.19676829  0.6337186   0.79037537  0.07859863
+   0.17692204  0.07674924  1.00523035  0.82479672  0.77283243  0.76540622
+   0.81480679  0.25306356  1.16289973]
+ [ 1.03999328  0.46036341  0.60600896  0.36010307  0.08495835  0.45889393
+   0.43392634  1.23314007 -0.12770478  0.88110126  0.24622292  0.31883308
+   0.6549755   0.97295682  0.30377895]
+ [ 0.18092909  0.42946727  1.03135284  0.49840225  1.22634691  0.61236329
+   0.2546953   0.537988    0.54405697  0.2578975   0.06327258  0.42863808
+   0.63508893  0.09253869  0.49486502]
+ [ 0.81437729  0.67331106  0.64471931  0.04555747  0.60253143 -0.24646055
+   0.81227279  1.13212134  1.31625157  0.12306647  0.56256081  0.18570394
+   0.11277446  0.61181069  0.00511697]
+ [ 0.56737735  0.25969757  0.94191268  0.27774135  0.44188615  0.61072416
+  -0.1912784   1.46164653  0.29353828  0.14654278  0.41899503 -0.0041996
+   0.27362878  0.7400845   1.08988829]
+ [ 0.11182781  0.23358365  0.53398986  0.80127609  0.55370574  0.95305725
+   0.4964446   0.96637164 -0.13159646  0.5942951  -0.14376535  0.71411293
+   0.00597684  0.68024723  0.92087465]
+ [ 0.78737839 -0.11589934  0.3876978   0.73535392  0.15365541  0.34364577
+   0.1144916   0.13879625  0.33089975  0.74924404  0.94919097  0.40426612
+   0.92289819  0.7225985   1.01516745]
+ [ 0.95182933  0.87966444  0.53189859  0.89234549  0.61754332  0.3066347
+   0.12627983  0.45423126  0.53215846 -0.01273344  1.22157174  0.27103802
+   0.09060354  0.00597878  0.94232502]
+ [ 0.74732452  0.03407234  0.10424449  0.93333727  1.09516239  0.66107085
+   0.49442089  0.43899184  0.19042087  0.54816294  0.66878575  0.84384514
+   0.97078429  0.55624466  0.05152631]]
