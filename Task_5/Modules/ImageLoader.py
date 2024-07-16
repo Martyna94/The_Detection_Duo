@@ -66,10 +66,12 @@ class ImageLoader:
 
         # Load and merge data from both JSONs
         for json_path, data_dir in zip(self.json_paths, self.data_dirs):
-            with open(json_path,'r') as f:
+            with open(json_path, 'r') as f:
                 data_json = json.load(f)
             for key, value in data_json.items():
                 full_path = os.path.join(data_dir,key)
+                if value >= self.label_num:
+                    continue
                 image_paths_by_label[value].append(full_path)
 
         all_data: list[tuple[ndarray, Any]] = []
