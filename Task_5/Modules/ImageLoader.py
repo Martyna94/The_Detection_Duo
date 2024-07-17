@@ -188,7 +188,7 @@ class ImageLoader:
         image = Image.fromarray(img_array)
         return np.array(image.resize(size))
 
-    def load_images(self, image_limit=None, resize=True, crop=True, **crop_params):
+    def load_images(self, image_limit=None, resize=True, crop=True, random_seed = 0, **crop_params):
         """
         Loads images with optional image limiting and customizable cropping parameters.
 
@@ -201,7 +201,7 @@ class ImageLoader:
             list: List of tuples, each containing an image array and its corresponding label.
         """
         if image_limit is not None:
-            return self._load_data_with_limit(image_limit, resize, crop, crop_params=crop_params)
+            return self._load_data_with_limit(image_limit, resize, crop, crop_params=crop_params, random_seed = random_seed)
         else:
             return self._load_all_data(resize, crop, crop_params)
 
