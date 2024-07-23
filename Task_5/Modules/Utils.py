@@ -6,6 +6,8 @@ import random
 from sklearn.decomposition import PCA
 import pennylane.numpy as np
 from sklearn.model_selection import train_test_split
+from collections import defaultdict
+import matplotlib.pyplot as plt
 
 
 def check_image_shapes(data_dir, json_path):
@@ -163,58 +165,77 @@ def split_data_into_train_val_test(X, Y, train_ratio, val_ratio, test_ratio):
     return X_train, Y_train, X_val, Y_val, X_test, Y_test
 
 
-def evaluate_model(params, X_set, Y_set, circuit):
+def reduce_dataset_to_2_classes(all_data, class_0_count=5000, other_classes_count=1000):
     """
-    Evaluate the model on validation/test data and return the accuracy.
+    Reduce the dataset to a binary classification task by merging multiple classes into two classes,
+    while maintaining specified sample counts.
 
     Parameters:
-        params: The parameters for the quantum circuit.
-        X_set:  Set images.
-        Y_set:  Set labels.
-        circuit: The quantum circuit function that makes predictions.
+    - all_data (list): List of tuples (data, label) representing the original dataset.
+    - class_0_count (int): Number of samples to take for class 0. Default is 5000.
+    - other_classes_count (int): Total number of samples to take for classes 1 to 5 combined. Default is 1000.
+
     Returns:
-        Accuracy percentage of the model on the validation/test set.
+    - list: Transformed dataset with adjusted class counts.
     """
-    test_correct = 0
-    for img, true_label in zip(X_set, Y_set):
-        predictions = circuit(img, params)
-        predicted_label = np.argmax(predictions)
+    # Group data by class
+    class_data = defaultdict(list)
+    for data, label in all_data:
+        class_data[label].append(data)
 
-        if predicted_label == true_label:
-            test_correct += 1
+    new_dataset = []
 
-    accuracy_value = 100 * test_correct / len(X_set)
-    return accuracy_value
+    # Add samples from class 0
+    new_dataset.extend((data, 0) for data in random.sample(class_data[0], min(class_0_count, len(class_data[0]))))
+
+    # Add samples from each of classes 1 to 5
+    for label in range(1, 6):
+        new_dataset.extend((data, 1) for data in random.sample(class_data[label], min(other_classes_count, len(class_data[label]))))
+
+    random.shuffle(new_dataset)
+
+    return new_dataset
 
 
-def costfunc_cross_entropy(params, X_set, Y_set, circuit):
+def plot_metrics_accuracy_and_cost(all_accuracy, all_cost):
     """
-    Compute the cross-entropy loss for a set of training data.
+    Plot accuracy and cost over epochs.
+
     Parameters:
-        params: The parameters for the quantum circuit.
-        X_set: Set images.
-        Y_set: Set labels.
-        circuit: he quantum circuit function that outputs probabilities.
-    Returns:
-        The average cross-entropy loss over the exact set
+    - all_accuracy (list): List of accuracy values over epochs.
+    - all_cost (list): List of cost values over epochs.
     """
-    y_true = np.array([
-        [1, 0, 0, 0, 0, 0, 0, 0],
-        [0, 1, 0, 0, 0, 0, 0, 0],
-        [0, 0, 1, 0, 0, 0, 0, 0],
-        [0, 0, 0, 1, 0, 0, 0, 0],
-        [0, 0, 0, 0, 1, 0, 0, 0],
-        [0, 0, 0, 0, 0, 1, 0, 0]
-    ])
+    plt.figure(figsize=(20, 5))
 
-    cost = 0
-    len_X_set = len(X_set)
+    # Plot 1: Accuracy over Epochs
+    plt.subplot(1, 2, 1)  # 1 row, 2 columns, plot 1
+    plt.plot(all_accuracy, marker='o', linestyle='-', color='b')
+    plt.title('Accuracy Value over Epochs')
+    plt.xlabel('Epoch')
+    plt.ylabel('Accuracy Value')
+    plt.ylim(0, 100)  # Set the y-axis to range from 0 to 100
+    plt.grid(True)
 
-    for i in range(len_X_set):
-        prob = circuit(X_set[i], params)
+    # Calculate the maximum accuracy value and its index
+    max_accuracy = max(all_accuracy)
+    max_index = all_accuracy.index(max_accuracy)
 
-        cost -= 1 / len_X_set * np.sum(y_true[Y_set[i]] * np.log(prob + 1e-8))  # Added small constant for numerical stability
+    # Annotate the maximum accuracy value
+    plt.annotate(f'Max: {max_accuracy:.2f}%', (max_index, max_accuracy), textcoords="offset points", xytext=(0, 10), ha='center', color='red')
 
-    return cost
+    # Mark the maximum accuracy value
+    plt.scatter(max_index, max_accuracy, color='red', s=100)
+
+    # Plot 2: Cost over Epochs
+    plt.subplot(1, 2, 2)  # 1 row, 2 columns, plot 2
+    plt.plot(all_cost, marker='o', linestyle='-', color='b')
+    plt.title('Cost Function Value over Epochs')
+    plt.xlabel('Epoch')
+    plt.ylabel('Cost Value')
+    plt.ylim(bottom=0)  # Set the y-axis to start from 0
+    plt.grid(True)
+
+    # Display the plots
+    plt.show()
 
 # %%
