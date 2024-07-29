@@ -162,6 +162,13 @@ def split_data_into_train_val_test(X, Y, train_ratio, val_ratio, test_ratio):
     Y_val = np.array(Y_val)
     Y_test = np.array(Y_test)
 
+    arrays = [Y_train, Y_val, Y_test]
+    names = ["Y_train", "Y_val", "Y_test"]
+
+    for y, name in zip(arrays, names):
+        values, counts = np.unique(y, return_counts=True)
+        print(f"{name}: Values: {values} Counts: {counts}")
+
     return X_train, Y_train, X_val, Y_val, X_test, Y_test
 
 
