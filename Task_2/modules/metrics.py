@@ -22,11 +22,8 @@ def show_all_metrics(labels, predictions):
     auc_score = auc(labels, predictions)
     precision, recall, fscore, _ = precision_recall_fscore_support(labels, predictions, average='binary')
 
-    print(f"Accuracy: {acc}")
-    print(f"Precision: {precision}")
-    print(f"Recall: {recall}")
-    print(f"F1 Score: {fscore}")
-    print(f"AUC-ROC: {auc_score}")
+    print(f"Accuracy: {acc} | Precision: {precision} | Recall: {recall} | F1 Score: {fscore} | AUC-ROC: {auc_score}")
+
 
     # Visualize the confusion matrix
     cm, disp = confusion_metric(labels, predictions, display=True)

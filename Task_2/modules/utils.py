@@ -1,6 +1,6 @@
 from pennylane import numpy as np
-import itertools
 from sklearn.model_selection import train_test_split
+import matplotlib.pyplot as plt
 
 
 def load_data_4_qubit():
@@ -49,18 +49,89 @@ def load_and_prepare_iris_data(train_ratio, val_ratio, test_ratio):
     return X_train, Y_train, X_val, Y_val, X_test, Y_test
 
 
-def generate_parity_dataset(num_bits, normalize = True):
-    # Generate all possible binary strings of length num_bits
-    X = np.array(list(itertools.product([0, 1], repeat=num_bits)), requires_grad=False)
+def plot_scatter(X, Y, dim1, dim2, title=None):
+    plt.figure()
+    plt.scatter(X[:, dim1][Y == 1], X[:, dim2][Y == 1], c="b", marker="o", ec="k", label="Class 1")
+    plt.scatter(X[:, dim1][Y == -1], X[:, dim2][Y == -1], c="r", marker="o", ec="k", label="Class -1")
+    plt.xlabel(f"Dimension {dim1}")
+    plt.ylabel(f"Dimension {dim2}")
+    if title:
+        plt.title(title)
+    plt.legend()
+    plt.show()
 
-    # Calculate the parity for each binary string
-    Y = np.sum(X, axis=1) % 2
-    if normalize:
-        # normalize each input
-        normalization = np.sqrt(np.sum(X**2, -1))
-        X = (X.T / normalization).T
-    X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.2, random_state=42, shuffle=True)
-    Y_train = Y_train * 2 - 1
-    Y_test = Y_test * 2 - 1
 
-    return X_train, X_test, Y_train, Y_test
+def plot_metrics_accuracy_and_cost(all_accuracy, all_cost):
+    """
+    Plot accuracy and cost over epochs.
+
+    Parameters:
+    - all_accuracy (list): List of accuracy values over epochs.
+    - all_cost (list): List of cost values over epochs.
+    """
+    plt.figure(figsize=(20, 5))
+
+    # Plot 1: Accuracy over Epochs
+    plt.subplot(1, 2, 1)  # 1 row, 2 columns, plot 1
+    plt.plot(all_accuracy, marker='o', linestyle='-', color='b')
+    plt.title('Accuracy Value over Epochs')
+    plt.xlabel('Epoch')
+    plt.ylabel('Accuracy Value')
+    plt.ylim(0, 100)  # Set the y-axis to range from 0 to 100
+    plt.grid(True)
+
+    # Calculate the maximum accuracy value and its index
+    max_accuracy = max(all_accuracy)
+    max_index = all_accuracy.index(max_accuracy)
+
+    # Annotate the maximum accuracy value
+    plt.annotate(f'Max: {max_accuracy:.2f}%', (max_index, max_accuracy), textcoords="offset points", xytext=(0, 10), ha='center', color='red')
+
+    # Mark the maximum accuracy value
+    plt.scatter(max_index, max_accuracy, color='red', s=100)
+
+    # Plot 2: Cost over Epochs
+    plt.subplot(1, 2, 2)  # 1 row, 2 columns, plot 2
+    plt.plot(all_cost, marker='o', linestyle='-', color='b')
+    plt.title('Cost Function Value over Epochs')
+    plt.xlabel('Epoch')
+    plt.ylabel('Cost Value')
+    plt.ylim(bottom=0)  # Set the y-axis to start from 0
+    plt.grid(True)
+
+    # Display the plots
+    plt.show()
+
+
+def plot_metrics_over_epochs(metrics_dict):
+    """
+    Plot metrics over epochs.
+
+    Parameters:
+    - metrics_dict (dict): Dictionary where keys are metric names and values are lists of metric values over epochs.
+    """
+    num_metrics = len(metrics_dict)
+    plt.figure(figsize=(6 * num_metrics, 5))
+
+    # Plot each metric
+    for i, (metric_name, metric_values) in enumerate(metrics_dict.items(), start=1):
+        plt.subplot(1, num_metrics, i)
+        plt.plot(metric_values, marker='o', linestyle='-', color='b')
+        plt.title(f'{metric_name} over Epochs')
+        plt.xlabel('Epoch')
+        plt.ylabel(f'{metric_name} Value')
+        plt.grid(True)
+
+        # Add annotations or customizations as needed
+        if metric_name == 'Accuracy':
+            plt.ylim(0, 100)  # Set y-axis limit for accuracy
+            max_accuracy = max(metric_values)
+            max_index = metric_values.index(max_accuracy)
+            plt.annotate(f'Max: {max_accuracy:.2f}%', (max_index, max_accuracy), textcoords="offset points", xytext=(0, 10), ha='center', color='red')
+            plt.scatter(max_index, max_accuracy, color='red', s=100)
+        elif metric_name == 'Cost':
+            plt.ylim(bottom=0)  # Set y-axis start from 0 for cost
+
+    # Adjust layout and display plots
+    plt.tight_layout()
+    plt.show()
