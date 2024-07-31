@@ -76,4 +76,39 @@ def circuit_training(X_train, Y_train, X_val, Y_val, num_qubits, num_layers, lea
 
     return weights, costs, train_accuracies, val_accuracies, biases
 
+def circuit_training_centric_ansatz(X_train, Y_train, X_val, Y_val, num_qubits, num_layers, learning_rate, batch_size,
+                     num_epochs, optimizer=None, seed=0):
+
+    weights_init = initialize_weights(num_layers, num_qubits, seed)
+    bias_init = np.array(0.0, requires_grad=True)
+
+    weights = weights_init
+    bias = bias_init
+
+    train_accuracies, val_accuracies, costs, biases = [], [], [], []
+
+    opt = initialize_optimizer(optimizer, learning_rate)
+
+    for epoch in range(num_epochs):
+        X_batch, Y_batch = get_batch(X_train, Y_train, batch_size)
+
+        weights, bias = opt.step(cost, weights, bias, X=X_batch, Y=Y_batch, num_qubits=num_qubits, state_prep=state_prep)
+
+        predictions_train = compute_predictions(weights, bias, X_batch, num_qubits, state_prep)
+        predictions_val = compute_predictions(weights, bias, X_val, num_qubits, state_prep)
+
+        current_cost = cost(weights, bias, X_batch, Y_batch, num_qubits, state_prep)
+
+        acc_train = accuracy(Y_batch, predictions_train)
+        acc_val = accuracy(Y_val, predictions_val)
+
+        print(f"Epoch: {epoch} | Cost: {current_cost:0.7f} | "f"Acc train: {acc_train:0.7f} | Acc validation: {acc_val:0.7f}")
+
+        costs.append(current_cost)
+        train_accuracies.append(acc_train)
+        val_accuracies.append(acc_val)
+        biases.append(bias)
+
+    return weights, costs, train_accuracies, val_accuracies, biases
+
 #%%

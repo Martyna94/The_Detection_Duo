@@ -1,7 +1,7 @@
 import pennylane.numpy as np
 
 
-def create_data(num_points, test_split=0.2):
+def create_data_sin_function(num_points, start=0, stop=2*np.pi, test_split=0.2):
     """
     Generate training data based on the sine function over a specified number of points.
 
@@ -13,7 +13,7 @@ def create_data(num_points, test_split=0.2):
     Example:
             >>> X_train, Y_train, X_test, Y_test = create_data(100)
     """
-    X = np.linspace(0, 2 * np.pi, num_points)
+    X = np.linspace(start, stop, num_points)
     X.requires_grad = False
     Y = np.sin(X)
 
@@ -24,8 +24,8 @@ def create_data(num_points, test_split=0.2):
     test_indices = indices[:num_test]
     train_indices = indices[num_test:]
 
-    X_train, Y_train = np.array(X[train_indices],requires_grad = False), np.array(Y[train_indices],requires_grad = False)
-    X_test, Y_test = np.array(X[test_indices],requires_grad = False), np.array(Y[test_indices],requires_grad = False)
+    X_train, Y_train = np.array(X[train_indices], requires_grad=False), np.array(Y[train_indices], requires_grad=False)
+    X_test, Y_test = np.array(X[test_indices], requires_grad=False), np.array(Y[test_indices], requires_grad=False)
 
     return X_train, Y_train, X_test, Y_test
 
@@ -53,4 +53,4 @@ def evaluate_model(params, X_set, Y_set, circuit):
 
     accuracy_value = 100 * test_correct / len(X_set)
     return accuracy_value
-#%%
+# %%
