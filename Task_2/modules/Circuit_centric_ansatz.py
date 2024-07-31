@@ -5,7 +5,7 @@ dev = qml.device("default.qubit")
 @qml.qnode(dev)
 def circuit_centric(weights, x, num_qubits=4):
     wires = [i for i in range(num_qubits)]
-    qml.AmplitudeEmbedding(features=x, wires=wires,normalize=True)
+    qml.AmplitudeEmbedding(features=x, wires=wires, normalize=True)
     qml.StronglyEntanglingLayers(weights=weights, wires=range(4))
     return qml.expval(qml.Z(0))
 
@@ -21,5 +21,5 @@ def square_loss(labels, predictions):
 
 
 def cost(weights, bias, X, Y):
-    predictions = [variational_classifier(weights, bias, x) for x in X]
+    predictions = [variational_classifier(weights, bias, x) > 0 for x in X]
     return square_loss(Y, predictions)
