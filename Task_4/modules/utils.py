@@ -1,5 +1,7 @@
 import pennylane.numpy as np
+import pennylane as qml
 import matplotlib.pyplot as plt
+from .training import training, cost_MSE
 
 
 def create_data_sin_function(num_points, start=0, stop=2 * np.pi, test_split=0.2):
@@ -39,7 +41,7 @@ def create_data_sin_function(num_points, start=0, stop=2 * np.pi, test_split=0.2
     return X_train, Y_train, X_test, Y_test
 
 
-def create_data_noise_function(num_points, start=0, stop=2 * np.pi, test_split=0.2):
+def create_data_advance_function(num_points, start=0, stop=2 * np.pi, test_split=0.2):
     """
     Generate training and test data based on the sine function over a specified range.
 
@@ -56,9 +58,12 @@ def create_data_noise_function(num_points, start=0, stop=2 * np.pi, test_split=0
     Example:
         >>> X_train, Y_train, X_test, Y_test = create_data_sin_function(100)
     """
-    X = np.linspace(-2 * np.pi, 2 * np.pi, num_points)
+    X = np.linspace(start, stop, num_points)
     X.requires_grad = False
     Y = np.sin(X) + 0.5 * np.sin(2 * X) + 0.25 * np.sin(3 * X)
+
+    # Normalize the output to be between -1 and 1
+    Y = Y / (1 + 0.5 + 0.25)
 
     indices = np.arange(num_points)
     np.random.shuffle(indices)
@@ -76,7 +81,7 @@ def create_data_noise_function(num_points, start=0, stop=2 * np.pi, test_split=0
     return X_train, Y_train, X_test, Y_test
 
 
-def plot_result(X_test, Y_test, test_predictions, X_train=None, Y_train=None):
+def plot_result(X_test, Y_test, test_predictions=None, X_train=None, Y_train=None):
     """
     Plots the comparison of training data, test data, and predictions.
 
@@ -103,7 +108,8 @@ def plot_result(X_test, Y_test, test_predictions, X_train=None, Y_train=None):
         ax1.scatter(X_train, Y_train, s=30, c='b', marker='s', label='Train labels')
 
     ax1.scatter(X_test, Y_test, s=60, c='r', marker="o", label='Test labels')
-    ax1.scatter(X_test, test_predictions, s=30, c='k', marker="x", label='Test predictions')
+    if test_predictions is not None:
+        ax1.scatter(X_test, test_predictions, s=30, c='k', marker="x", label='Test predictions')
 
     ax1.set_xlabel("Inputs")
     ax1.set_ylabel("Labels")
@@ -117,4 +123,39 @@ def plot_result(X_test, Y_test, test_predictions, X_train=None, Y_train=None):
     ax1.set_xticklabels([f"{x:.2f}π" for x in x_ticks / np.pi], rotation=45)
 
     plt.show()
+
+
+def perform_training(num_points_array):
+    num_epochs = 30
+    stepsize = 0.1
+    init_params = [0.1, 0.1]
+    summary = []
+    for num_points in num_points_array:
+        # Generate training and testing data
+        X_train = np.linspace(0, 2 * np.pi, num_points)
+        X_train.requires_grad = False
+        Y_train = np.sin(X_train)
+
+        # Initialize optimizer and parameters
+        opt = qml.GradientDescentOptimizer(stepsize=stepsize)
+        init_params = np.array(init_params, requires_grad=True)
+
+        # Perform training
+        final_params, costs = training(num_epochs, opt, cost_MSE, init_params, X_train, Y_train)
+
+        # Generate test set, size always the same not depends on params `num_points`
+        X_test, Y_test,_,_ = create_data_sin_function(1000,start= 2 * np.pi,stop = 7 * np.pi)
+
+        test_cost = cost_MSE(final_params, X_test, Y_test)
+        summary.append((num_points, final_params, costs[-1],test_cost))
+
+        print(f"Training completed with {num_points} data points.")
+        print(f"Final parameters: {final_params}")
+        print(f"Final cost: {costs[-1]:0.7f}")
+        print(f"Test cost: {test_cost:0.7f}")
+    # Print summary of all results
+    print("\nSummary of all training runs:")
+    for num_points, final_params, final_cost, test_cost in summary:
+        print(f"Training completed with {num_points} data points | Final parameters: {final_params} | Final cost: {final_cost:0.7f}| Test cost: {test_cost:0.7f}")
+
 # %%
