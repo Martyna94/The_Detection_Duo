@@ -44,7 +44,7 @@ def create_data_sin_function(num_points, start=0, stop=2 * np.pi, test_split=0.2
 
 def create_data_advance_function(num_points, coeff0, coeffs,start=0, stop=2 * np.pi, scaling=1):
     """
-    Generate training and test data based on the sine function over a specified range.
+    Generate training data based on the sine function over a specified range.
 
     Parameters:
         num_points (int): The number of input data points to generate.
@@ -53,8 +53,8 @@ def create_data_advance_function(num_points, coeff0, coeffs,start=0, stop=2 * np
         test_split (float): The proportion of data to be used for testing. Default is 0.2 (20%).
 
     Returns:
-        tuple: Four numpy arrays containing the training and test input data points (X_train, X_test)
-               and the corresponding sine values (Y_train, Y_test).
+        tuple: Four numpy arrays containing the training  input data points (X_train)
+               and the corresponding sine values (Y_train).
 
     Example:
         >>> X_train, Y_train = create_data_sin_function(100)
