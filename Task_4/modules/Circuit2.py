@@ -9,14 +9,17 @@ def W(theta):
     qml.Rot(theta[0], theta[1], theta[2], wires=0)
 
 
-@qml.qnode(dev)
-def serial_quantum_model(weights, x, scaling=1):
-
-    for theta in weights[:-1]:
+def layer(layer_weights,x, scaling):
+    for theta in layer_weights:
         W(theta)
         S(x, scaling)
 
+@qml.qnode(dev)
+def quantum_circuit_2(x,weights, scaling=1):
+
+    for layer_weights in weights[:-1]:
+        layer(layer_weights, x, scaling)
     # L+1'th unitary
-    W(weights[-1])
+    W(*weights[-1])
 
     return qml.expval(qml.PauliZ(wires=0))

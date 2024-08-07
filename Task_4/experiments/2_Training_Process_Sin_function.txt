@@ -1,0 +1,33 @@
+Y_train: Length: 800
+Y_test: Length: 200
+Epoch: 0 | Cost: 0.9560806
+Epoch: 1 | Cost: 0.7471881
+Epoch: 2 | Cost: 0.5726777
+Epoch: 3 | Cost: 0.4051193
+Epoch: 4 | Cost: 0.2675526
+Epoch: 5 | Cost: 0.1954855
+Epoch: 6 | Cost: 0.1280698
+Epoch: 7 | Cost: 0.0800945
+Epoch: 8 | Cost: 0.0468384
+Epoch: 9 | Cost: 0.0307951
+Epoch: 10 | Cost: 0.0207028
+Epoch: 11 | Cost: 0.0131028
+Epoch: 12 | Cost: 0.0078492
+Epoch: 13 | Cost: 0.0047361
+Epoch: 14 | Cost: 0.0028773
+Epoch: 15 | Cost: 0.0017291
+Epoch: 16 | Cost: 0.0011522
+Epoch: 17 | Cost: 0.0008025
+Epoch: 18 | Cost: 0.0005044
+Epoch: 19 | Cost: 0.0003337
+Epoch: 20 | Cost: 0.0002092
+Epoch: 21 | Cost: 0.0001277
+Epoch: 22 | Cost: 0.0000874
+Epoch: 23 | Cost: 0.0000584
+Epoch: 24 | Cost: 0.0000379
+Epoch: 25 | Cost: 0.0000249
+Epoch: 26 | Cost: 0.0000160
+Epoch: 27 | Cost: 0.0000096
+Epoch: 28 | Cost: 0.0000064
+Epoch: 29 | Cost: 0.0000042
+Final parameters:  [-0.78393125 -0.78393125]

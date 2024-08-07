@@ -76,6 +76,8 @@ def circuit_training(X_train, Y_train, X_val, Y_val, num_qubits, num_layers, lea
 
     return weights, costs, train_accuracies, val_accuracies, biases
 
+
+
 def circuit_training_centric_ansatz(X_train, Y_train, X_val, Y_val, num_qubits, num_layers, learning_rate, batch_size,
                      num_epochs, optimizer=None, seed=0):
 
