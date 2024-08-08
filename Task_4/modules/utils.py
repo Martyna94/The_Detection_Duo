@@ -5,6 +5,7 @@ import seaborn as sns
 from .training import training, cost_MSE
 
 
+
 def create_data_sin_function(num_points, start=0, stop=2 * np.pi, test_split=0.2):
     """
     Generate training and test data based on the sine function over a specified range.
@@ -129,15 +130,18 @@ def plot_result(title, X_test=None, Y_test=None, test_label="Test labels", test_
     plt.show()
 
 
-def perform_training(num_points_array):
+def perform_training(data_points):
     num_epochs = 30
     stepsize = 0.1
     init_params = [0.1, 0.1]
-    summary = []
+
+    final_costs = []
+    test_costs = []
+    params = []
     # Generate test set, size always the same not depends on params `num_points`
     X_test, Y_test,_,_ = create_data_sin_function(1000,start= 2 * np.pi,stop = 7 * np.pi)
 
-    for num_points in num_points_array:
+    for num_points in data_points:
         # Generate training
         X_train = np.linspace(0, 2 * np.pi, num_points)
         X_train.requires_grad = False
@@ -149,9 +153,11 @@ def perform_training(num_points_array):
 
         # Perform training
         final_params, costs = training(num_epochs, opt, cost_MSE, init_params, X_train, Y_train)
-
         test_cost = cost_MSE(final_params, X_test, Y_test)
-        summary.append((num_points, final_params, costs[-1],test_cost))
+
+        params.append(final_params)
+        test_costs.append(test_cost)
+        final_costs.append(costs[-1])
 
         print(f"Training completed with {num_points} data points.")
         print(f"Final parameters: {final_params}")
@@ -159,8 +165,9 @@ def perform_training(num_points_array):
         print(f"Test cost: {test_cost:0.7f}")
     # Print summary of all results
     print("\nSummary of all training runs:")
-    for num_points, final_params, final_cost, test_cost in summary:
+    for num_points, final_params, final_cost, test_cost in zip(data_points,final_params,final_costs,test_costs):
         print(f"Training completed with {num_points} data points | Final parameters: {final_params} | Final cost: {final_cost:0.7f}| Test cost: {test_cost:0.7f}")
+    return final_params, final_costs, test_costs
 
 
 def plot_metrics_over_epochs(metrics_dict):
@@ -207,5 +214,44 @@ def plot_metrics_over_epochs(metrics_dict):
     # Adjust layout and display plots
     plt.tight_layout()
     plt.show()
+
+
+def plot_number_adjustment(data_points,final_cost,test_cost):
+
+    sns.set(style="whitegrid")
+
+    fig, (ax2, ax1) = plt.subplots(2, 1, sharex=True, figsize=(12, 8), gridspec_kw={'height_ratios': [1, 1]})
+
+    ax1.scatter(data_points, final_cost, label='Training Cost', color='blue', s=100, alpha=0.7, marker='o')
+    ax1.scatter(data_points, test_cost, label='Test Cost', color='red', s=100, alpha=0.7, marker='o')
+
+    for i, txt in enumerate(test_cost):
+        if test_cost[i] < 0.1:
+            ax1.annotate(f'{txt:.7f}', (data_points[i], test_cost[i]), fontsize=9, color='red', ha='left')
+
+    ax1.set_ylim(0, 0.000007)
+    ax1.set_ylabel('Cost Value', fontsize=14)
+    ax1.legend(fontsize=12)
+    ax1.grid(True, linestyle='--', alpha=0.7)
+
+    ax2.scatter(data_points, final_cost, label='Final Cost', color='blue', s=100, alpha=0.7, marker='o')
+    ax2.scatter(data_points, test_cost, label='Test Cost', color='red', s=100, alpha=0.7, marker='o')
+
+    for i, txt in enumerate(test_cost):
+        if test_cost[i] >= 0.1:
+            ax2.annotate(f'{txt:.7f}', (data_points[i], test_cost[i]), fontsize=9, color='red', ha='left')
+
+    ax2.set_ylim(1.8, 2.1)
+    ax2.set_xlabel('Number of Data Points', fontsize=14)
+    ax2.set_ylabel('Cost Value', fontsize=14)
+    ax2.grid(True, linestyle='--', alpha=0.7)
+
+    plt.xticks([1, 2, 3, 4, 5, 10, 20, 30, 50, 100],
+           ['1', '2', '3', '4', '5', '10', '20', '30', '50', '100'],
+           fontsize=12)
+    plt.suptitle('Training and Test Costs vs. Number of Data Points', fontsize=16, fontweight='bold')
+
+    plt.show()
+
 
 # %%
