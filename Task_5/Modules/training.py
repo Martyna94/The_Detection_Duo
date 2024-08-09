@@ -103,3 +103,68 @@ def costfunc_focal(params, X, Y, circuit, num_classes=6, gamma=2):
         loss -= ((1-p_i)**gamma)*np.log(p_i)
 
     return loss/len_X_set
+
+
+
+def train_model(X_train, Y_train, X_val, Y_val, params, optimizer, circuit_peps, num_classes, num_epoch, batch_size):
+    """
+    Train a model using the specified parameters and optimizer.
+
+    Parameters:
+        X_train (ndarray): Training data features.
+        Y_train (ndarray): Training data labels.
+        X_val (ndarray): Validation data features.
+        Y_val (ndarray): Validation data labels.
+        params (dict): Initial model parameters.
+        optimizer (Optimizer): Optimizer object with a step_and_cost method.
+        circuit_peps (function): The quantum circuit or classical model to be used.
+        num_classes (int): Number of classes in the classification task.
+        num_epoch (int): Number of training epochs.
+        batch_size (int): Size of each training batch.
+
+    Returns:
+        dict: Final parameters after training.
+        list: Training accuracy over epochs.
+        list: Validation accuracy over epochs.
+        list: Costs over epochs.
+        float: Total training time in hours.
+    """
+
+    all_params, train_accuracies, val_accuracies, costs = [], [], [], []
+    all_params.append(params)
+
+    for epoch in range(num_epoch):
+        # Select a random batch of training data
+        batch_index = np.random.randint(0, len(X_train), batch_size)
+        X_batch = X_train[batch_index]
+        Y_batch = Y_train[batch_index]
+
+        # Update parameters and calculate cost
+        params, cost = optimizer.step_and_cost(costfunc_cross_entropy, params, X=X_batch, Y=Y_batch, circuit=circuit_peps, num_classes=num_classes)
+
+        # Store the initial cost
+        if epoch == 0:
+            costs.append(cost)
+
+        # Calculate the current cost
+        current_cost = costfunc_cross_entropy(params, X=X_batch, Y=Y_batch, circuit=circuit_peps, num_classes=num_classes)
+
+        # Calculate training and validation accuracy
+        acc_train = accuracy(params, X_batch, Y_batch, circuit_peps)
+        acc_val = accuracy(params, X_val, Y_val, circuit_peps)
+
+        # Print the current epoch, cost, and accuracy
+        print(f"Epoch: {epoch + 1} | Cost: {current_cost:0.7f} | Acc train: {acc_train:0.7f} | Acc validation: {acc_val:0.7f}")
+
+        # Store accuracies and parameters
+        train_accuracies.append(acc_train)
+        val_accuracies.append(acc_val)
+        all_params.append(params)
+
+    # Calculate total training time in hours
+
+    # Print the final parameters and total time
+    print(params)
+
+
+    return params, train_accuracies, val_accuracies, costs, total_time_hours
