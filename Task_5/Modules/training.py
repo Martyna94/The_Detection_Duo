@@ -1,5 +1,5 @@
 import pennylane.numpy as np
-from metrices import accuracy
+from .metrices import accuracy
 
 def costfunc_cross_entropy(params, X, Y, circuit, num_classes=6):
     """
@@ -152,6 +152,7 @@ def train_model(X_train, Y_train, X_val, Y_val, params, optimizer, circuit_peps,
         train_accuracies.append(acc_train)
         val_accuracies.append(acc_val)
         all_params.append(params)
+        costs.append(current_cost)
 
     print(params)
 

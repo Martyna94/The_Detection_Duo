@@ -216,6 +216,10 @@ def plot_metrics_accuracy_and_cost(all_accuracy, all_cost):
     - all_accuracy (list): List of accuracy values over epochs.
     - all_cost (list): List of cost values over epochs.
     """
+    # Check if accuracy is in range 0-1 and scale to 0-100 if needed
+    if max(all_accuracy) <= 1:
+        all_accuracy = [x * 100 for x in all_accuracy]
+
     plt.figure(figsize=(20, 5))
 
     # Plot 1: Accuracy over Epochs
