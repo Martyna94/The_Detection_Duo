@@ -46,8 +46,10 @@ Team Member 2:
 _Include a comprehensive summary of all important information about your project solution here._
 All necessary code files and any additional information required to judge your project solution should be included in the repository. 
 
+We have finished all 5 tasks and we suggest the following. First using watching the 3 minutes video presenting an overview of our solution. Then reading the report which explains a lot more in-depth our solution. Then the judge can start reading the jupyter notebooks and python files for every task. The slides and reports are found in the GitHub repository and also in the shared google drive.
+
 ### Project Presentation Deck:
-_Upload/ Link a 3min. presentation deck here._
+_Upload/ Link a 3min. presentation deck here._ https://drive.google.com/drive/folders/15mTDGrM5DGaGN612IQHc26DL88q_3gG-?usp=sharing
 
 See project presentation guidelines [here](https://docs.google.com/document/d/13nWF8AxFAfFYTWEYPT3BpPdYkqtxxSAjmuXj_zcMh-E/edit?usp=sharing)
 
