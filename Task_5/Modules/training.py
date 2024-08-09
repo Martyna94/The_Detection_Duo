@@ -1,6 +1,7 @@
 import pennylane.numpy as np
 from .metrices import accuracy
 
+
 def costfunc_cross_entropy(params, X, Y, circuit, num_classes=6):
     """
     Compute the average cross-entropy loss for a given dataset.

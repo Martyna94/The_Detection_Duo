@@ -33,21 +33,28 @@ Ensure your repository does not contain any personal or team tokens/access infor
 
 ### Team Information:
 Team Member 1:
- - Full Name: 
- - Womanium Program Enrollment ID (see Welcome Email, format- WQ24-xxxxxxxxxxxxxxx):
+ - Full Name: Martyna Anna Czuba
+ - Womanium Program Enrollment ID:WQ24-hvwfAq1MhA14elt
 
 
 Team Member 2:
  - Full Name: Hussein Shiri
- - Womanium Program Enrollment ID (see Welcome Email, format- WQ24-xxxxxxxxxxxxxxx): WQ24-qQoJWr5dGvp26gO
+ - Womanium Program Enrollment ID: WQ24-qQoJWr5dGvp26gO
 
 
 ### Project Solution:
 _Include a comprehensive summary of all important information about your project solution here._
 All necessary code files and any additional information required to judge your project solution should be included in the repository. 
 
-We have finished all 5 tasks and we suggest the following. First using watching the 3 minutes video presenting an overview of our solution. Then reading the report which explains a lot more in-depth our solution. Then the judge can start reading the jupyter notebooks and python files for every task. The slides and reports are found in the GitHub repository and also in the shared google drive.
+We have completed all five tasks and are pleased to present our solution. We suggest the following order for reviewing the materials:
 
+* **Start by watching the 3-minute video**: This video provides an overview of our solution and can serve as a good introduction to further analysis.
+
+* **Read the report**: The report contains detailed explanations of our approach and methodology, helping to better understand our work.
+
+* **Review the code**: Finally, we encourage you to go through the Jupyter notebooks and Python files, which contain the implementations for each task.
+
+All materials, including the slides and the report, are available in our GitHub repository as well as in the shared Google Drive folder
 ### Project Presentation Deck:
 _Upload/ Link a 3min. presentation deck here._ https://drive.google.com/drive/folders/15mTDGrM5DGaGN612IQHc26DL88q_3gG-?usp=sharing
 
