@@ -6,6 +6,7 @@ from sklearn.metrics import precision_recall_fscore_support
 from sklearn.metrics import classification_report
 from sklearn.metrics import balanced_accuracy_score
 
+
 def accuracy(params, X_set, Y_set, circuit):
     """
     Evaluate the model on validation/test data and return the accuracy.
@@ -48,7 +49,6 @@ def show_all_metrics(params, X_set, Y_set, circuit, target_names = ['class 0', '
     disp.plot()
 
 
-
 def confusion_metric(labels, predictions, display):
     cm = confusion_matrix(labels, predictions)
     if display:
@@ -56,5 +56,3 @@ def confusion_metric(labels, predictions, display):
         return cm, disp
     return cm
 
-
-    return
