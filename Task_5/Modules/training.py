@@ -34,6 +34,7 @@ def costfunc_cross_entropy(params, X, Y, circuit, num_classes=6):
 
     return loss/len_X_set
 
+
 def costfunc_exponential(params, X, Y, circuit, num_classes=6):
     """
     Compute the average exponential loss for a given dataset.
@@ -53,7 +54,7 @@ def costfunc_exponential(params, X, Y, circuit, num_classes=6):
     - Assumes circuit(X[i], params) returns an array of probabilities for each class, indexed from 0 to num_classes-1.
     """
     len_X_set = len(X)
-    Y_true_one_hot =  np.eye(num_classes)[[i for i in range(num_classes)]]
+    Y_true_one_hot = np.eye(num_classes)[[i for i in range(num_classes)]]
 
     loss = 0.0
 
@@ -65,6 +66,7 @@ def costfunc_exponential(params, X, Y, circuit, num_classes=6):
 
         loss += (1+10*np.sum(np.sum(np.exp(7*np.sum(Y_true_one_hot[Y[i]] * prob[0:num_classes])))))**-1
     return loss
+
 
 def costfunc_focal(params, X, Y, circuit, num_classes=6, gamma=2):
     """
@@ -86,7 +88,7 @@ def costfunc_focal(params, X, Y, circuit, num_classes=6, gamma=2):
     - Assumes circuit(X[i], params) returns an array of probabilities for each class, indexed from 0 to num_classes-1.
     """
     len_X_set = len(X)
-    Y_true_one_hot =  np.eye(num_classes)[[i for i in range(num_classes)]]
+    Y_true_one_hot = np.eye(num_classes)[[i for i in range(num_classes)]]
 
     loss = 0.0
 

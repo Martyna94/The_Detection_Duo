@@ -7,6 +7,7 @@ from sklearn.decomposition import PCA
 import pennylane.numpy as np
 from sklearn.model_selection import train_test_split
 from collections import defaultdict
+from sklearn.preprocessing import StandardScaler
 import matplotlib.pyplot as plt
 
 
@@ -95,20 +96,23 @@ def display_images_by_class(data, images_per_class):
 
 def prepare_data(dataset):
     """
-    Shuffles the dataset and separates it into flattened features and labels.
+    Shuffles the dataset, flattens the image data arrays, scales the flattened features,
+    and separates them into features and labels.
 
     Parameters:
         dataset (list of tuples): Each tuple contains an image data array and a corresponding label.
 
     Returns:
-        tuple: Two lists, where the first list contains the flattened features (image data arrays)
-               and the second list contains the labels..
+        tuple: Two elements,
+               - The first element is a numpy array containing the scaled, flattened features (image data arrays).
+               - The second element is a list containing the labels.
     """
     random.shuffle(dataset)
 
     X_set = [data[0].flatten() for data in dataset]
     Y_set = [data[1] for data in dataset]
-
+    scaler = StandardScaler()
+    X_set = scaler.fit_transform(X_set)
     return X_set, Y_set
 
 
