@@ -1,5 +1,5 @@
 import pennylane.numpy as np
-
+from metrices import accuracy
 
 def costfunc_cross_entropy(params, X, Y, circuit, num_classes=6):
     """
@@ -105,7 +105,6 @@ def costfunc_focal(params, X, Y, circuit, num_classes=6, gamma=2):
     return loss/len_X_set
 
 
-
 def train_model(X_train, Y_train, X_val, Y_val, params, optimizer, circuit_peps, num_classes, num_epoch, batch_size):
     """
     Train a model using the specified parameters and optimizer.
@@ -134,37 +133,27 @@ def train_model(X_train, Y_train, X_val, Y_val, params, optimizer, circuit_peps,
     all_params.append(params)
 
     for epoch in range(num_epoch):
-        # Select a random batch of training data
         batch_index = np.random.randint(0, len(X_train), batch_size)
         X_batch = X_train[batch_index]
         Y_batch = Y_train[batch_index]
 
-        # Update parameters and calculate cost
         params, cost = optimizer.step_and_cost(costfunc_cross_entropy, params, X=X_batch, Y=Y_batch, circuit=circuit_peps, num_classes=num_classes)
 
-        # Store the initial cost
         if epoch == 0:
             costs.append(cost)
 
-        # Calculate the current cost
         current_cost = costfunc_cross_entropy(params, X=X_batch, Y=Y_batch, circuit=circuit_peps, num_classes=num_classes)
 
-        # Calculate training and validation accuracy
         acc_train = accuracy(params, X_batch, Y_batch, circuit_peps)
         acc_val = accuracy(params, X_val, Y_val, circuit_peps)
 
-        # Print the current epoch, cost, and accuracy
         print(f"Epoch: {epoch + 1} | Cost: {current_cost:0.7f} | Acc train: {acc_train:0.7f} | Acc validation: {acc_val:0.7f}")
 
-        # Store accuracies and parameters
         train_accuracies.append(acc_train)
         val_accuracies.append(acc_val)
         all_params.append(params)
 
-    # Calculate total training time in hours
-
-    # Print the final parameters and total time
     print(params)
 
 
-    return params, train_accuracies, val_accuracies, costs, total_time_hours
+    return all_params, train_accuracies, val_accuracies, costs
