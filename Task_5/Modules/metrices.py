@@ -37,7 +37,7 @@ def show_all_metrics(params, X_set, Y_set, circuit, target_names = ['class 0', '
     acc = accuracy_score(Y_set, predictions)
     auc_score = roc_auc_score(Y_set, predictions)
     precision, recall, fscore, _ = precision_recall_fscore_support(Y_set, predictions, average='binary')
-    balanced_acc= balanced_accuracy_score(Y_set, predictions)
+    balanced_acc = balanced_accuracy_score(Y_set, predictions)
 
     # Print the evaluation results in a structured format
     print(f"Accuracy: {acc:.4f} | Precision: {precision:.4f} | Recall: {recall:.4f} | F1 Score: {fscore:.4f} | AUC-ROC: {auc_score:.4f} | Balanced Accuracy: {balanced_acc:.4f}")

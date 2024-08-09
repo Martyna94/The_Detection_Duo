@@ -230,11 +230,11 @@ def plot_metrics_accuracy_and_cost(all_accuracy, all_cost):
     # Calculate the maximum accuracy value and its index
     max_accuracy = max(all_accuracy)
     max_index = all_accuracy.index(max_accuracy)
+    min_cost = min(all_cost)
+    min_index = all_cost.index(min_cost)
 
-    # Annotate the maximum accuracy value
+    # Annotate and mark max accuracy value and min cost value
     plt.annotate(f'Max: {max_accuracy:.2f}%', (max_index, max_accuracy), textcoords="offset points", xytext=(0, 10), ha='center', color='red')
-
-    # Mark the maximum accuracy value
     plt.scatter(max_index, max_accuracy, color='red', s=100)
 
     # Plot 2: Cost over Epochs
@@ -245,6 +245,8 @@ def plot_metrics_accuracy_and_cost(all_accuracy, all_cost):
     plt.ylabel('Cost Value')
     plt.ylim(bottom=0)  # Set the y-axis to start from 0
     plt.grid(True)
+    plt.annotate(f'Min: {min_cost:.6f}', (min_index, min_cost), textcoords="offset points", xytext=(0, 10), ha='center', color='red')
+    plt.scatter(min_index, min_cost, color='red', s=100)
 
     # Display the plots
     plt.show()
